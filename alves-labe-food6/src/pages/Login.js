@@ -22,7 +22,7 @@ export default function Login() {
                     <FormHelperText marginBottom={'5px'}>Senha</FormHelperText>
                     <Input placeholder={'Mínimo 6 caracteres'} _placeholder={{ color: '#d0d0d0' }} h={'3.5rem'} onChange={onChange} type={'password'} name={'password'}></Input>
                     <FormErrorMessage>Senha inválida.</FormErrorMessage>
-                </FormControl>
+                </FormControl> 
                 <Button background={'#E8222E'} borderRadius={'0'} h={'2.625rem'} fontWeight={'400'} onClick={() => userLogin(form)}>Entrar</Button>
                 <Flex justify={'center'} marginTop={'0.75rem'}>
                     <Text>Não possui cadastro? <Link>Clique aqui.</Link></Text>
