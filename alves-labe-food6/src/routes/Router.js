@@ -5,6 +5,8 @@ import {
   Route,
 } from "react-router-dom";
 import Login from '../pages/Login';
+import Signup from '../pages/Signup';
+import Address from '../pages/Address';
 import GlobalState from '../components/global/GlobalState';
 
 const Router = () => {
@@ -12,7 +14,9 @@ const Router = () => {
     <BrowserRouter>
       <GlobalState>
         <Routes>
-          <Route path='/login' element={<Login />}></Route>          
+          <Route path='/login' element={<Login />}></Route>     
+          <Route path='/signup' element={<Signup />}></Route>  
+          <Route path='/address' element={<Address />}></Route>        
         </Routes>
       </GlobalState>
     </BrowserRouter>
