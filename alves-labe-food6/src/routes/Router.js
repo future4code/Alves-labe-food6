@@ -9,6 +9,8 @@ import Signup from '../pages/Signup';
 import Address from '../pages/Address';
 import GlobalState from '../components/global/GlobalState';
 import HomePage from '../pages/homePage/HomePage';
+import Profile from '../pages/homePage/Profile';
+
 
 const Router = () => {
   return (
@@ -17,7 +19,8 @@ const Router = () => {
         <Routes>
           <Route path='/login' element={<Login />}></Route>     
           <Route path='/signup' element={<Signup />}></Route>  
-          <Route path='/address' element={<Address />}></Route>    
+          <Route path='/address' element={<Address />}></Route> 
+          <Route path='/profile' element={<Profile />}></Route>      
           <Route path='/' element={<HomePage />}></Route>        
         </Routes>
       </GlobalState>
