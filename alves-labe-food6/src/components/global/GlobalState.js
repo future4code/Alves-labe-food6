@@ -3,6 +3,7 @@ import axios from "axios";
 import { GlobalContext } from "./GlobalContext";
 import { baseURL } from "../../constants/baseURL";
 import { useNavigate } from "react-router-dom";
+import { getRestaurants } from "../../services/restaurants";
 
 export default function GlobalState(props) {
   const [errors, setErrors] = useState({
@@ -11,8 +12,15 @@ export default function GlobalState(props) {
     cpf: false,
     name: false,
   });
+  const [rest, setRest] = useState([])
+  const [filter, setFilter] = useState('')
+  console.log(filter)
 
   const navigate = useNavigate();
+  
+  useEffect(()=>{
+    getRestaurants(setRest)
+  },[])
 
   const userLogin = (form) => {
     if (
@@ -103,8 +111,9 @@ export default function GlobalState(props) {
       }
   
 
+       
     axios
-      .put(baseURL + "/address", form)
+      .put(baseURL + "/address", form, { headers: { auth : localStorage.getItem("token") }})
       .then((res) => {
         console.log(res.data);
         localStorage.setItem("token", res.data.token);
@@ -122,6 +131,10 @@ export default function GlobalState(props) {
     userSignUp,
     userAddAddress,
     errors, 
+    rest,
+    setRest,
+    filter,
+    setFilter
   };
 
   return <Provider value={values}>{props.children}</Provider>;
