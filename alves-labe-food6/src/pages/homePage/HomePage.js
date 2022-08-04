@@ -61,8 +61,9 @@ const HomePage = () => {
     return (
         <Flex flexDir={'column'} justifyItems={'center'} alignItems={'center'}>
             <div>Ifuture</div>
-            <InputGroup >
+            <InputGroup alignSelf={'center'} >
                 <InputLeftElement
+                    h={'3.5rem'}
                     pointerEvents='none'
                     children={<SearchIcon color='gray.300' />}
                 />
