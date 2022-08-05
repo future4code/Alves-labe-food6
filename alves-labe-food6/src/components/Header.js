@@ -1,30 +1,52 @@
 import React from "react";
-import { Flex, IconButton } from "@chakra-ui/react";
+import { Box, Flex, GridItem, IconButton, Grid } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { GrPrevious } from "react-icons/gr";
 
-export default function Header(props) {
+import { GrPrevious } from "react-icons/gr";
+import { GrPrevious } from 'react-icons/gr';
+import { goBack } from "../routes/coordinator";
+
+
+
+export default function Header() {
   const navigate = useNavigate();
 
-  const goBackTo = (page) => {
-    navigate(page);
-  };
-
+  const defineTitle = () => {
+    if (window.location.pathname.includes("/restaurant/")) {
+        return (
+            <Box justifySelf={"center"} h={"7vh"} textAlign={'center'} as='flex'><p>Restuarante</p></Box>
+        )
+    }
+  }
   return (
-    <Flex
-      flexDir={"row"}
-      justify={"flex-start"}
-      align={"center"}
+    <Grid
+      templateRows='1'
+      templateColumns='repeat(3,1fr)'
+      alignItems={"center"}
       fontFamily={"Roboto"}
-      w={"100%"}
+      justify={'center'}
+      w={"100vw"}
+      h={"7vh"}
       borderBottom={"1px solid #d0d0d0"}
     >
+    <GridItem>
       <IconButton
         background={"#FFFFFF"}
-        onClick={() => goBackTo(props.page)}
+        justifySelf={'flex-start'}
+        onClick={() => goBack(navigate)}
         icon={<GrPrevious />}
         fontSize="20px"
       ></IconButton>
     </Flex>
+
+        fontSize='20px'
+      >
+      </IconButton>
+      </GridItem>
+    <GridItem>
+      {defineTitle()}
+      </GridItem>
+    </Grid>
+
   );
 }

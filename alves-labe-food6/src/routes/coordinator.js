@@ -11,7 +11,9 @@ export const goToSignUp = (navigate) => {
 export const goToAddress = (navigate) => {
     navigate(`/address`)
 }
-
+export const goToProfile = (navigate) => {
+    navigate(`/profile`)
+}
 export const goToHome = (navigate) => {
     navigate("/")
 }
