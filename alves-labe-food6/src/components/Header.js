@@ -1,11 +1,8 @@
 import React from "react";
 import { Box, Flex, GridItem, IconButton, Grid } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-
-import { GrPrevious } from "react-icons/gr";
 import { GrPrevious } from 'react-icons/gr';
 import { goBack } from "../routes/coordinator";
-
 
 
 export default function Header() {
@@ -37,11 +34,6 @@ export default function Header() {
         icon={<GrPrevious />}
         fontSize="20px"
       ></IconButton>
-    </Flex>
-
-        fontSize='20px'
-      >
-      </IconButton>
       </GridItem>
     <GridItem>
       {defineTitle()}

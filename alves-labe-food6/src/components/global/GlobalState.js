@@ -12,22 +12,17 @@ export default function GlobalState(props) {
     cpf: false,
     name: false,
   });
-  const [rest, setRest] = useState([]);
-  const [filter, setFilter] = useState("");
-  console.log(filter);
-
   const [rest, setRest] = useState([])
   const [filter, setFilter] = useState('')
   const [restDetail, setRestDetail] = useState({})
 
   console.log(restDetail)
 
-
   const navigate = useNavigate();
-
-  useEffect(() => {
-    getRestaurants(setRest);
-  }, []);
+  
+  useEffect(()=>{
+    getRestaurants(setRest)
+  },[])
 
   const userLogin = (form) => {
     if (
@@ -77,7 +72,13 @@ export default function GlobalState(props) {
       setErrors({ name: true });
       return;
     }
-    if (form.cpf.match("^[0-9]{3}.?[0-9]{3}.?[0-9]{3}-?[0-9]{2}")) {
+    if (form.cpf
+    .match(
+      '^[0-9]{3}.?[0-9]{3}.?[0-9]{3}-?[0-9]{2}'
+      ) 
+    )
+    {
+    
       setErrors({ cpf: true });
       return;
     }
@@ -94,7 +95,8 @@ export default function GlobalState(props) {
       });
   };
   const userAddAddress = (form) => {
-    if (form.street === "") {
+    if (
+      form.street === "") {
       setErrors({ street: true });
       return;
     }
@@ -111,24 +113,19 @@ export default function GlobalState(props) {
       return;
     }
     if (form.state === "") {
-      setErrors({ state: true });
-      return;
-    }
+        setErrors({ state: true });
+        return;
+      }
+  
 
+       
     axios
-      .put(baseURL + "/address", form, {
-        headers: { auth: localStorage.getItem("token") },
-      })
+      .put(baseURL + "/address", form, { headers: { auth : localStorage.getItem("token") }})
       .then((res) => {
         console.log(res.data);
         localStorage.setItem("token", res.data.token);
-        setErrors({
-          street: false,
-          number: false,
-          neighbourhood: false,
-          city: false,
-          state: false,
-        });
+        // navigate("/address"); DEVE IR PARA A PROXIMA PAGINA
+        setErrors({ street: false, number: false, neighbourhood: false, city: false, state:false });
       })
       .catch((err) => {
         console.log(err);
@@ -140,15 +137,13 @@ export default function GlobalState(props) {
     userLogin,
     userSignUp,
     userAddAddress,
-    errors,
+    errors, 
     rest,
     setRest,
     filter,
     setFilter,
-
     restDetail,
     setRestDetail,
-
   };
 
   return <Provider value={values}>{props.children}</Provider>;
