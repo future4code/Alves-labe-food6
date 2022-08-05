@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import axios from "axios";
-import { baseURL } from "../../constants/baseURL";
+import { baseURL } from "../constants/baseURL";
 import { useState } from "react";
-import NavBar from "./NavBar";
+import NavBar from "../components/NavBar";
 
 export default function Profile() {
   const [profile, setProfile] = useState({});

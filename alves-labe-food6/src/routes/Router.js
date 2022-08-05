@@ -10,7 +10,7 @@ import Address from '../pages/Address';
 import GlobalState from '../components/global/GlobalState';
 import { EditAddress } from '../pages/editAddress';
 import HomePage from '../pages/homePage/HomePage';
-import Profile from '../pages/homePage/Profile';
+import Profile from '../pages/Profile';
 import RestaurantPage from '../pages/RestaurantPage/RestaurantPage';
 
 

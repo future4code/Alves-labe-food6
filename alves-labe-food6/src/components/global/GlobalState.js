@@ -14,7 +14,9 @@ export default function GlobalState(props) {
   });
   const [rest, setRest] = useState([])
   const [filter, setFilter] = useState('')
-  console.log(filter)
+  const [restDetail, setRestDetail] = useState({})
+
+  console.log(restDetail)
 
   const navigate = useNavigate();
   
@@ -139,7 +141,9 @@ export default function GlobalState(props) {
     rest,
     setRest,
     filter,
-    setFilter
+    setFilter,
+    restDetail,
+    setRestDetail,
   };
 
   return <Provider value={values}>{props.children}</Provider>;

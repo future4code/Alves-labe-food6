@@ -5,7 +5,23 @@ import { Input, InputGroup, InputLeftElement, Flex, Box, useSlider } from '@chak
 import { SearchIcon } from '@chakra-ui/icons'
 import { useNavigate } from 'react-router-dom'
 import { goToRestaurant } from '../../routes/coordinator'
+import NavBar from '../../components/NavBar'
 
+const Title = styled.h1`
+font-family: Roboto;
+font-size: 1rem;
+font-weight: normal;
+font-stretch: normal;
+font-style: normal;
+line-height: normal;
+letter-spacing: -0.39px;
+text-align: center;
+color: #000;
+margin: 1.25rem 5.75rem 0 5.813rem;
+padding: 0.813rem 4.063rem 0.75rem;
+width: 10.938rem;
+height: 2.75rem;
+`
 const CardRest = styled.div`
  
   width: 20.5rem;
@@ -80,7 +96,7 @@ const HomePage = () => {
 
     return (
         <Flex flexDir={'column'} justifyItems={'center'} alignItems={'center'} w='100vw'>
-            <div>Ifuture</div>
+            <Title>Ifuture</Title>
             <InputGroup h={'3.5rem'} w={'20.5rem'}>
                 <InputLeftElement
                     h={'3.5rem'}
@@ -96,7 +112,7 @@ const HomePage = () => {
                     onChange={handleQuery}>
                 </Input>
             </InputGroup>
-            <Flex w='100vw' padding='1rem' flexWrap='wrap'>
+            <Flex w='100vw' padding='1rem' overflow={'scroll'}>
                 {rest && rest.map((rest) => <Box
                     as='button'
                     height='24px'
@@ -107,9 +123,9 @@ const HomePage = () => {
                     fontSize='14px'
                     fontWeight='semibold'
                     bg='inherit'
-                    color='#B8B8B8'
+                    color='#000'
                     _focus={{
-                        color: color ? '#E8222E' : '#B8B8B8',
+                        color: color ? '#E8222E' : '#000',
                     }}
                     onClick={() => handleFilter(rest.category)}
                 >
@@ -145,7 +161,7 @@ const HomePage = () => {
                         )
                     })}
             </div>
-            <div>NavBar</div>
+            <NavBar/>
         </Flex>
     )
 }
