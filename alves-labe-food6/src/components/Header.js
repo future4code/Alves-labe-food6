@@ -1,8 +1,7 @@
 import React from "react";
 import { Flex, IconButton } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { GrPrevious } from 'react-icons/gr';
-
+import { GrPrevious } from "react-icons/gr";
 
 export default function Header(props) {
   const navigate = useNavigate();
@@ -24,11 +23,8 @@ export default function Header(props) {
         background={"#FFFFFF"}
         onClick={() => goBackTo(props.page)}
         icon={<GrPrevious />}
-        fontSize='20px'
-      >
-      </IconButton>
-      
-
+        fontSize="20px"
+      ></IconButton>
     </Flex>
   );
 }
