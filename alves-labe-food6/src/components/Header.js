@@ -32,13 +32,13 @@ export default function Header() {
         justifySelf={'flex-start'}
         onClick={() => goBack(navigate)}
         icon={<GrPrevious />}
-        fontSize='20px'
-      >
-      </IconButton>
+        fontSize="20px"
+      ></IconButton>
       </GridItem>
     <GridItem>
       {defineTitle()}
       </GridItem>
     </Grid>
+
   );
 }

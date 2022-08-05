@@ -23,8 +23,6 @@ export default function Signup() {
   });
   const { userSignUp, errors } = useContext(GlobalContext);
 
-
-  
   return (
     <Flex
       flexDir={"column"}
@@ -87,10 +85,9 @@ export default function Signup() {
               name={"cpf"}
             ></Input>
             <FormErrorMessage>
-            O CPF precisa conter no mínimo 11 dígitos!
+              O CPF precisa conter no máximo 11 dígitos!
             </FormErrorMessage>
           </FormControl>
-          
           <FormControl id="senha" isRequired isInvalid={errors.password}>
             <FormHelperText marginBottom={"5px"}>Senha*</FormHelperText>
             <Input
