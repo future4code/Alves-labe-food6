@@ -1,7 +1,7 @@
 import React, {useContext, useState} from 'react'
 import { GlobalContext } from '../../components/global/GlobalContext'
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
-import styled from 'styled-components'
+
 
 const Filtro = () => {
     const {rest, setFilter} = useContext(GlobalContext)

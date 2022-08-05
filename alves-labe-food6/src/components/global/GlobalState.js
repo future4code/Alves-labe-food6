@@ -70,8 +70,13 @@ export default function GlobalState(props) {
       setErrors({ name: true });
       return;
     }
-    if (form.cpf === "" || form.cpf.length < 11) {
-      // PEGAR REGEX PARA VALIDAR CPF
+    if (form.cpf
+    .match(
+      '^[0-9]{3}.?[0-9]{3}.?[0-9]{3}-?[0-9]{2}'
+      ) 
+    )
+    {
+    
       setErrors({ cpf: true });
       return;
     }
