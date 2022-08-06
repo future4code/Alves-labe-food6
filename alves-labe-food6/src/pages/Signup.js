@@ -8,11 +8,15 @@ import {
   FormControl,
   FormErrorMessage,
   FormHelperText,
+  InputRightElement,
+  InputGroup,
+  IconButton,
 } from "@chakra-ui/react";
 import Logo from "../img/logo-future-eats-login.svg";
 import { useForm } from "../hooks/useForm";
 import { GlobalContext } from "../components/global/GlobalContext";
 import Header from "../components/Header";
+import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 
 export default function Signup() {
   const { form, onChange } = useForm({
@@ -22,6 +26,10 @@ export default function Signup() {
     password: "",
   });
   const { userSignUp, errors } = useContext(GlobalContext);
+  const [show, setShow] = React.useState(false);
+  const [showConfirmation, setShowConfirmation] = React.useState(false);
+  const handleClick = () => setShow(!show);
+  const handleClickConfirmation = () => setShowConfirmation(!showConfirmation);
 
   return (
     <Flex
@@ -90,26 +98,48 @@ export default function Signup() {
           </FormControl>
           <FormControl id="senha" isRequired isInvalid={errors.password}>
             <FormHelperText marginBottom={"5px"}>Senha*</FormHelperText>
-            <Input
-              placeholder={"Mínimo 6 caracteres"}
-              _placeholder={{ color: "#d0d0d0" }}
-              h={"3.5rem"}
-              onChange={onChange}
-              type={"password"}
-              name={"password"}
-            ></Input>
+            <InputGroup size="md">
+              <Input
+                placeholder={"Mínimo 6 caracteres"}
+                _placeholder={{ color: "#d0d0d0" }}
+                h={"3.5rem"}
+                onChange={onChange}
+                type={show ? "text" : "password"}
+                name={"password"}
+              ></Input>
+              <InputRightElement width="4.5rem" h="100%">
+                <IconButton
+                  h="100%"
+                  fontSize="25px"
+                  variant="unstyled"
+                  onClick={handleClick}
+                  icon={show ? <MdVisibilityOff /> : <MdVisibility />}
+                ></IconButton>
+              </InputRightElement>
+            </InputGroup>
             <FormErrorMessage>Senha inválida.</FormErrorMessage>
           </FormControl>
           <FormControl id="Confirmar" isRequired isInvalid={errors.password}>
             <FormHelperText marginBottom={"5px"}>Confirmar*</FormHelperText>
-            <Input
-              placeholder={"Confirmar senha"}
-              _placeholder={{ color: "#d0d0d0" }}
-              h={"3.5rem"}
-              onChange={onChange}
-              type={"password"}
-              name={"password"}
-            ></Input>
+            <InputGroup size="md">
+              <Input
+                placeholder={"Confirmar senha"}
+                _placeholder={{ color: "#d0d0d0" }}
+                h={"3.5rem"}
+                onChange={onChange}
+                type={showConfirmation ? "text" : "password"}
+                name={"password"}
+              ></Input>
+              <InputRightElement width="4.5rem" h="100%">
+                <IconButton
+                  h="100%"
+                  fontSize="25px"
+                  variant="unstyled"
+                  onClick={handleClickConfirmation}
+                  icon={showConfirmation ? <MdVisibilityOff /> : <MdVisibility />}
+                ></IconButton>
+              </InputRightElement>
+            </InputGroup>
             <FormErrorMessage>
               Deve ser a mesma que a anterior.
             </FormErrorMessage>
