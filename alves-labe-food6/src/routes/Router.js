@@ -8,10 +8,11 @@ import Login from '../pages/Login';
 import Signup from '../pages/Signup';
 import Address from '../pages/Address';
 import GlobalState from '../components/global/GlobalState';
-import { EditAddress } from '../pages/editAddress';
+import { EditAddress } from '../pages/EditAddress';
 import HomePage from '../pages/homePage/HomePage';
 import Profile from '../pages/Profile';
 import RestaurantPage from '../pages/RestaurantPage/RestaurantPage';
+import EditProfile from '../pages/RestaurantPage/EditProfile';
 
 
 
@@ -26,7 +27,8 @@ const Router = () => {
           <Route path='/address' element={<Address />}></Route>    
           <Route path='/' element={<HomePage />}></Route>   
           <Route path='/restaurant/:id' element={<RestaurantPage />}></Route>   
-          <Route path='/editaddress' element={<EditAddress />}></Route>                
+          <Route path='/editaddress' element={<EditAddress />}></Route>
+          <Route path='/editprofile' element={<EditProfile />}></Route>                 
 
         </Routes>
       </GlobalState>

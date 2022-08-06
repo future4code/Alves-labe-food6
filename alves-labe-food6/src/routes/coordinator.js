@@ -7,6 +7,12 @@ export const goBack = (navigate) => {
 export const goToSignUp = (navigate) => {
     navigate(`/signup`)
 }
+export const goToEditProfile = (navigate) => {
+    navigate(`/editprofile`)
+}
+export const goToEditAddress = (navigate) => {
+    navigate(`/editaddress`)
+}
 
 export const goToAddress = (navigate) => {
     navigate(`/address`)
