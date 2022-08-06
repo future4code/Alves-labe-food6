@@ -11,7 +11,7 @@ export default function Header() {
   const defineTitle = () => {
     if (window.location.pathname.includes("/restaurant/")) {
         return (
-            <Box justifySelf={"center"} h={"7vh"} textAlign={'center'} as='flex'><p>Restuarante</p></Box>
+            <Box justifySelf={"center"} h={"7vh"} textAlign={'center'} as='flex'><p>Restaurante</p></Box>
         )
     }
   }

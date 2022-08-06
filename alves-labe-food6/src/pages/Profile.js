@@ -4,6 +4,11 @@ import { baseURL } from "../constants/baseURL";
 import { useState } from "react";
 import NavBar from "../components/NavBar";
 import styled from "styled-components";
+import { EditIcon, Icon } from "@chakra-ui/icons";
+import { Flex } from "@chakra-ui/react";
+import { goToEditAddress, goToEditProfile } from "../routes/coordinator";
+import { useNavigate } from "react-router-dom";
+
 
 const ContainerProfile = styled.div`
   display: flex;
@@ -61,6 +66,7 @@ text-transform:uppercase;
 export default function Profile() {
   const [profile, setProfile] = useState({});
   const [order, setOrder] = useState([]);
+  const navigate = useNavigate();
 
   const getProfile = () => {
     axios
@@ -81,12 +87,12 @@ export default function Profile() {
   const profileCard = (
     <div>
       <CardUserInfo>
-        <p>{profile.name}</p>
+       <Flex align={"center"} justify={"space-between"}><p>{profile.name}</p><Icon onClick={()=>goToEditProfile(navigate)}><EditIcon/></Icon></Flex> 
         <p>{profile.email}</p>
         <p>{profile.cpf}</p>
       </CardUserInfo>
       <CardAdressInfo>
-        <H3>Endereço cadastrado</H3>
+      <Flex align={"center"} justify={"space-between"}><H3>Endereço cadastrado</H3><Icon onClick={()=>goToEditAddress(navigate)}><EditIcon/></Icon></Flex>
         <strong>
           <p>{profile.address}</p>
         </strong>
