@@ -3,6 +3,60 @@ import axios from "axios";
 import { baseURL } from "../constants/baseURL";
 import { useState } from "react";
 import NavBar from "../components/NavBar";
+import styled from "styled-components";
+
+const ContainerProfile = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+const H1Estilizada1 = styled.h1`
+padding-top: 12%;
+padding-bottom:8%;
+`;
+
+const CardAdressInfo = styled.div`
+  background-color: #eeeeee;
+  padding: 3%;
+`;
+const CardUserInfo = styled.div`
+padding: 3%;
+font-weight: 500;
+`;
+const CardHistoryOrder = styled.div`
+padding: 3%;
+font-weight: 500;
+`;
+const RestaurantName = styled.p`
+color: red;
+font-size: large;
+font-weight: 500;
+`
+const RestaurantCard = styled.div`
+margin: 6%;
+border-color: gray;
+border-width:1px ;
+border-radius: 2%;
+padding: 2%;
+`;
+const DivHr = styled.div`
+display: flex;
+text-align: center;
+justify-content: center;
+`
+const HR = styled.hr`
+width: 90vw;
+border-width: 1px;
+border-radius: 2%;
+border-color: black;
+`;
+const H3 =styled.h3`
+color:#c1c1c1;
+`
+const SubTotal = styled.p`
+font-size:larger;
+font-weight:700;
+text-transform:uppercase;
+`;
 
 export default function Profile() {
   const [profile, setProfile] = useState({});
@@ -26,13 +80,17 @@ export default function Profile() {
 
   const profileCard = (
     <div>
-      <strong>
-        <h3>Endereço cadastrado</h3>
-      </strong>
-      <p>{profile.address}</p>
-      <p>{profile.cpf}</p>
-      <p>{profile.email}</p>
-      <p>{profile.name}</p>
+      <CardUserInfo>
+        <p>{profile.name}</p>
+        <p>{profile.email}</p>
+        <p>{profile.cpf}</p>
+      </CardUserInfo>
+      <CardAdressInfo>
+        <H3>Endereço cadastrado</H3>
+        <strong>
+          <p>{profile.address}</p>
+        </strong>
+      </CardAdressInfo>
     </div>
   );
 
@@ -58,27 +116,38 @@ export default function Profile() {
   };
 
   let orderHistoryCard;
-  const options = { year: 'numeric', month: 'short', day: 'numeric' }
+  const options = { year: "numeric", month: "short", day: "numeric" };
   order
     ? (orderHistoryCard = order.map((order) => {
         return (
-          <div>
-            <p>{order.restaurantName}</p>
-            <p>{new Date(order.createdAt).toLocaleDateString('pt-br',options)}</p>
-            <p>Subtotal R$ {order.totalPrice}</p>
-          </div>
+          <RestaurantCard>
+            <RestaurantName>{order.restaurantName}</RestaurantName>
+            <p>
+              {new Date(order.createdAt).toLocaleDateString("pt-br", options)}
+            </p>
+            <SubTotal>Subtotal R$ {order.totalPrice}</SubTotal>
+          </RestaurantCard>
         );
       }))
     : (orderHistoryCard = <p>Você não realizou nenhhum</p>);
 
   return (
     <div>
-      <h1>Meu perfil</h1>
-      {profileCard}
-      <p>Histórico de pedidos</p>
+      <ContainerProfile>
+        <strong>
+          <H1Estilizada1>Meu perfil</H1Estilizada1>
+        </strong>
+      </ContainerProfile>
       <hr></hr>
+      {profileCard}
+      <CardHistoryOrder>
+      <p>Histórico de pedidos</p>
+      </CardHistoryOrder>
+      <DivHr>
+      <HR></HR>
+      </DivHr>
       {orderHistoryCard}
-      <NavBar/>
+      <NavBar />
     </div>
   );
 }
