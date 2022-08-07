@@ -1,12 +1,20 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Flex, Input, Button, Heading, Image, Text, Link, FormControl, FormErrorMessage, FormHelperText } from '@chakra-ui/react'
-import Logo from '../img/logo-future-eats-login.svg'
-import { useForm } from '../hooks/useForm'
-import { GlobalContext } from '../components/global/GlobalContext'
+import Logo from '../../img/logo-future-eats-login.svg'
+import { useForm } from '../../hooks/useForm'
+import { GlobalContext } from '../../components/global/GlobalContext'
+import { goToHome } from '../../routes/coordinator'
+import { useNavigate } from 'react-router-dom'
 
 export default function Login() {
     const { form, onChange } = useForm({ email: '', password: '' })
     const { userLogin, errors } = useContext(GlobalContext)
+   
+    const navigate = useNavigate()
+    
+    useEffect(()=>{
+        localStorage.getItem('token') && goToHome(navigate)
+      },[])
 
     return (
         <Flex flexDir={'center'} justify={'center'} align={'center'} paddingTop={'5.5rem'} fontFamily={'Roboto'}>

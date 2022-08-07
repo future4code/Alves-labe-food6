@@ -1,23 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import axios from "axios";
-import { baseURL } from "../constants/baseURL";
+import { baseURL } from "../../constants/baseURL";
 import { useState } from "react";
-import NavBar from "../components/NavBar";
+import NavBar from "../../components/NavBar";
 import styled from "styled-components";
 import { EditIcon, Icon } from "@chakra-ui/icons";
 import { Flex } from "@chakra-ui/react";
-import { goToEditAddress, goToEditProfile } from "../routes/coordinator";
+import { goToEditAddress, goToEditProfile, goToLoginPage } from "../../routes/coordinator";
 import { useNavigate } from "react-router-dom";
+import { GlobalContext } from "../../components/global/GlobalContext";
+import Header from "../../components/Header";
 
 
-const ContainerProfile = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-const H1Estilizada1 = styled.h1`
-padding-top: 12%;
-padding-bottom:8%;
-`;
+
 
 const CardAdressInfo = styled.div`
   background-color: #eeeeee;
@@ -64,25 +59,13 @@ text-transform:uppercase;
 `;
 
 export default function Profile() {
-  const [profile, setProfile] = useState({});
+  const {profile} = useContext(GlobalContext);
   const [order, setOrder] = useState([]);
   const navigate = useNavigate();
 
-  const getProfile = () => {
-    axios
-      .get(baseURL + "/profile", {
-        headers: {
-          auth: localStorage.getItem("token"),
-        },
-      })
-      .then((response) => {
-        console.log(response);
-        setProfile(response.data.user);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  useEffect(()=>{
+    !localStorage.getItem('token') && goToLoginPage(navigate)
+  },[])
 
   const profileCard = (
     <div>
@@ -101,7 +84,6 @@ export default function Profile() {
   );
 
   useEffect(() => {
-    getProfile();
     orderHistory();
   }, []);
 
@@ -139,11 +121,7 @@ export default function Profile() {
 
   return (
     <div>
-      <ContainerProfile>
-        <strong>
-          <H1Estilizada1>Meu perfil</H1Estilizada1>
-        </strong>
-      </ContainerProfile>
+      <Header/>
       <hr></hr>
       {profileCard}
       <CardHistoryOrder>

@@ -4,6 +4,8 @@ import { GlobalContext } from "./GlobalContext";
 import { baseURL } from "../../constants/baseURL";
 import { useNavigate } from "react-router-dom";
 import { getRestaurants } from "../../services/restaurants";
+import { getAddress, getProfile } from "../../services/profile";
+import { goBack, goToAddress, goToEditProfile, goToHome } from "../../routes/coordinator";
 
 export default function GlobalState(props) {
   const [errors, setErrors] = useState({
@@ -15,15 +17,27 @@ export default function GlobalState(props) {
   const [rest, setRest] = useState([])
   const [filter, setFilter] = useState('')
   const [restDetail, setRestDetail] = useState({})
+  const [address, setAddress] = useState({})
+  const [editControl, setEditControl] = useState(false)
+  const [profile, setProfile] = useState({});
 
-  console.log(restDetail)
+
+  console.log(profile)
 
   const navigate = useNavigate();
   
   useEffect(()=>{
     getRestaurants(setRest)
+    getProfile(setProfile)
   },[])
+  useEffect(()=>{
+    getAddress(setAddress)
+    getRestaurants(setRest)
+    getProfile(setProfile)
+    goToEditProfile(setProfile)
+  },[editControl])
 
+console.log(address)
   const userLogin = (form) => {
     if (
       form.email === "" ||
@@ -45,6 +59,7 @@ export default function GlobalState(props) {
       .then((res) => {
         console.log(res.data);
         localStorage.setItem("token", res.data.token);
+        goToAddress(navigate)
         setErrors({ email: false, password: false });
       })
       .catch((err) => {
@@ -124,8 +139,48 @@ export default function GlobalState(props) {
       .then((res) => {
         console.log(res.data);
         localStorage.setItem("token", res.data.token);
-        // navigate("/address"); DEVE IR PARA A PROXIMA PAGINA
+        goToHome(navigate)
+        setEditControl(!editControl)
         setErrors({ street: false, number: false, neighbourhood: false, city: false, state:false });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const userEditProfile = (form) => {
+    if (
+      form.email === "" ||
+      !form.email
+        .toLowerCase()
+        .match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        )
+    ) {
+      setErrors({ email: true });
+      return;
+    }
+    if (form.name === "") {
+      setErrors({ name: true });
+      return;
+    }
+    if (form.cpf
+    .match(
+      '^[0-9]{3}.?[0-9]{3}.?[0-9]{3}-?[0-9]{2}'
+      ) 
+    )
+    {
+    
+      setErrors({ cpf: true });
+      return;
+    }
+
+    axios
+      .put(baseURL + "/profile", form, { headers: { auth : localStorage.getItem("token") }})
+      .then((res) => {
+        console.log(res.data);
+        goBack(navigate);
+        setEditControl(!editControl)
+        setErrors({ email: false, name: false, cpf: false });
       })
       .catch((err) => {
         console.log(err);
@@ -144,6 +199,9 @@ export default function GlobalState(props) {
     setFilter,
     restDetail,
     setRestDetail,
+    address,
+    profile,
+    userEditProfile,
   };
 
   return <Provider value={values}>{props.children}</Provider>;
