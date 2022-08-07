@@ -14,6 +14,23 @@ export default function Header() {
             <Box justifySelf={"center"} h={"7vh"} textAlign={'center'} as='flex'><p>Restaurante</p></Box>
         )
     }
+    if (window.location.pathname.includes("/editaddress")) {
+      return (
+          <Box justifySelf={"center"} h={"7vh"} textAlign={'center'} as='flex'><p>Endereço Atual</p></Box>
+      )
+  }
+  if (window.location.pathname.includes("/editprofile")) {
+    return (
+        <Box justifySelf={"center"} h={"7vh"} textAlign={'center'} as='flex'><p>Editar Perfil</p></Box>
+
+    )
+}
+if (window.location.pathname.includes("/profile")) {
+  return (
+      <Box justifySelf={"center"} h={"7vh"} textAlign={'center'} as='flex'><p>Meu Perfil</p></Box>
+      
+  )
+}
   }
   return (
     <Grid
@@ -30,7 +47,7 @@ export default function Header() {
       <IconButton
         background={"#FFFFFF"}
         justifySelf={'flex-start'}
-        onClick={() => goBack(navigate)}
+        onClick={()=>goBack(navigate)}
         icon={<GrPrevious />}
         fontSize="20px"
       ></IconButton>

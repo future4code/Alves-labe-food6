@@ -1,10 +1,10 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { GlobalContext } from '../../components/global/GlobalContext'
 import styled from 'styled-components'
 import { Input, InputGroup, InputLeftElement, Flex, Box, useSlider } from '@chakra-ui/react/'
 import { SearchIcon } from '@chakra-ui/icons'
 import { useNavigate } from 'react-router-dom'
-import { goToRestaurant } from '../../routes/coordinator'
+import { goToAddress, goToLoginPage, goToRestaurant } from '../../routes/coordinator'
 import NavBar from '../../components/NavBar'
 
 const Title = styled.h1`
@@ -73,26 +73,47 @@ const CardRest = styled.div`
 `
 
 const HomePage = () => {
-    const { rest } = useContext(GlobalContext)
+    const { rest, profile } = useContext(GlobalContext)
     const [filter, setFilter] = useState('')
     const [query, setQuery] = useState('')
     const [color, setColor] = useState(false)
 
     const navigate = useNavigate()
-
+    useEffect(() => {
+        profile.hasAddres === false && goToAddress(navigate);
+        !localStorage.getItem("token") && goToLoginPage(navigate)
+    }, [])
     const handleFilter = (category) => {
-        if(filter===category){
+        if (filter === category) {
             setFilter('')
             setColor(false)
-        }else{
-        setFilter(category)
-        setColor(true)
+        } else {
+            setFilter(category)
+            setColor(true)
         }
     }
     const handleQuery = (e) => {
         setQuery(e.target.value)
     }
 
+    const arrayCat = rest && rest.map((rest) => <Box
+        as='button'
+        height='24px'
+        lineHeight='1.2'
+        transition='all 0.2s cubic-bezier(.08,.52,.52,1)'
+        px='8px'
+        border='none'
+        fontSize='14px'
+        fontWeight='semibold'
+        bg='inherit'
+        color='#000'
+        _focus={{
+            color: color ? '#E8222E' : '#000',
+        }}
+        onClick={() => handleFilter(rest.category)}
+    >
+        {rest.category}
+    </Box>)
 
     return (
         <Flex flexDir={'column'} justifyItems={'center'} alignItems={'center'} w='100vw'>
@@ -113,24 +134,7 @@ const HomePage = () => {
                 </Input>
             </InputGroup>
             <Flex w='100vw' padding='1rem' overflow={'scroll'}>
-                {rest && rest.map((rest) => <Box
-                    as='button'
-                    height='24px'
-                    lineHeight='1.2'
-                    transition='all 0.2s cubic-bezier(.08,.52,.52,1)'
-                    px='8px'
-                    border='none'
-                    fontSize='14px'
-                    fontWeight='semibold'
-                    bg='inherit'
-                    color='#000'
-                    _focus={{
-                        color: color ? '#E8222E' : '#000',
-                    }}
-                    onClick={() => handleFilter(rest.category)}
-                >
-                    {rest.category}
-                </Box>)}
+                {rest && [...new Set(arrayCat)]}
             </Flex>
             <div>
                 {rest
@@ -150,7 +154,7 @@ const HomePage = () => {
                     })
                     .map((rest) => {
                         return (
-                            <CardRest key={rest.id} onClick={()=>goToRestaurant(navigate, rest.id)}>
+                            <CardRest key={rest.id} onClick={() => goToRestaurant(navigate, rest.id)}>
                                 <img src={rest.logoUrl} />
                                 <h2>{rest.name}</h2>
                                 <div>
@@ -161,7 +165,7 @@ const HomePage = () => {
                         )
                     })}
             </div>
-            <NavBar/>
+            <NavBar />
         </Flex>
     )
 }

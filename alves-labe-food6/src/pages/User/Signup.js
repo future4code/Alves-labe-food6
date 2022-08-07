@@ -12,10 +12,10 @@ import {
   InputGroup,
   IconButton,
 } from "@chakra-ui/react";
-import Logo from "../img/logo-future-eats-login.svg";
-import { useForm } from "../hooks/useForm";
-import { GlobalContext } from "../components/global/GlobalContext";
-import Header from "../components/Header";
+import Logo from "../../img/logo-future-eats-login.svg";
+import { useForm } from "../../hooks/useForm";
+import { GlobalContext } from "../../components/global/GlobalContext";
+import Header from "../../components/Header";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 
 export default function Signup() {

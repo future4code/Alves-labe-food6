@@ -1,40 +1,41 @@
-import React, { useContext } from "react";
-import {
-  Flex,
-  Input,
-  Button,
-  Heading,
-  Image,
-  FormControl,
-  FormErrorMessage,
-  FormHelperText,
-} from "@chakra-ui/react";
-import Logo from "../img/logo-future-eats-login.svg";
-import { useForm } from "../hooks/useForm";
-import { GlobalContext } from "../components/global/GlobalContext";
-import Header from "../components/Header";
 
-export default function Address() {
-  const { form, onChange } = useForm({
-    street: "",
-    number: "",
-    neighbourhood: "",
-    city: "",
-    state: "",
-    complement: "",
-  });
-  const { userAddAddress, errors } = useContext(GlobalContext);
 
-  return (
-    <Flex
-      flexDir={"column"}
-      align={"center"}
-      fontFamily={"Roboto"}
-      w={"100%"}
-      gap={"1.5rem"}
-    >
-      <Header page="/signup"></Header>
-      <Flex
+import { Input, Stack, Button, Flex, Image, Heading, FormControl, FormHelperText, FormErrorMessage } from "@chakra-ui/react";
+import Header from "../../components/Header";
+import { useForm } from "../../hooks/useForm";
+import Logo from "../../img/logo-future-eats-login.svg";
+import { GlobalContext } from "../../components/global/GlobalContext";
+import { useContext, useEffect} from "react";
+import { goBack, goToLoginPage } from "../../routes/coordinator";
+import { useNavigate } from "react-router-dom";
+
+
+export const EditAddress = ()=>{
+  const { userAddAddress, errors, address } = useContext(GlobalContext);
+  const navigate = useNavigate()
+        const {form, onChange} = useForm(
+            {
+                street: address && address.street,
+                number: address && address.number,
+                neighbourhood: address && address.neighbourhood,
+                city: address && address.city,
+                state: address && address.state,
+                complement: address && address.complement,
+              }
+        )
+
+        useEffect(()=>{
+          !localStorage.getItem('token') && goToLoginPage(navigate)
+        },[])
+    const submitEdit = () =>{
+        alert('Endereço alterado com sucesso!')
+    } 
+    return(
+       
+        <Stack spacing={12} >
+              <Header/>
+
+           <Flex
         flexDir={"center"}
         justify={"center"}
         align={"center"}
@@ -61,6 +62,7 @@ export default function Address() {
               onChange={onChange}
               type={"text"}
               name={"street"}
+              value={form.street}
             ></Input>
             <FormErrorMessage>Logradouro é obrigatório</FormErrorMessage>
           </FormControl>
@@ -72,6 +74,7 @@ export default function Address() {
               h={"3.5rem"}
               onChange={onChange}
               type={"number"}
+              value={form.number}
               name={"number"}
             ></Input>
             <FormErrorMessage>Número é obrigatório</FormErrorMessage>
@@ -84,6 +87,7 @@ export default function Address() {
               h={"3.5rem"}
               onChange={onChange}
               type={"text"}
+              value={form.complement}
               name={"complement"}
             ></Input>
             <FormErrorMessage>Complemento é inválido.</FormErrorMessage>
@@ -99,6 +103,7 @@ export default function Address() {
               _placeholder={{ color: "#d0d0d0" }}
               h={"3.5rem"}
               onChange={onChange}
+              value={form.neighbourhood}
               type={"text"}
               name={"neighbourhood"}
             ></Input>
@@ -112,6 +117,7 @@ export default function Address() {
               h={"3.5rem"}
               onChange={onChange}
               type={"text"}
+              value={form.city}
               name={"city"}
             ></Input>
             <FormErrorMessage>Cidade é obrigatório.</FormErrorMessage>
@@ -124,6 +130,7 @@ export default function Address() {
               h={"3.5rem"}
               onChange={onChange}
               type={"text"}
+              value={form.state}
               name={"state"}
             ></Input>
             <FormErrorMessage>Estado é obrigatório.</FormErrorMessage>
@@ -133,13 +140,15 @@ export default function Address() {
             borderRadius={"0"}
             h={"2.625rem"}
             fontWeight={"400"}
-            onClick={() => userAddAddress(form)}
+            onClick={() => {userAddAddress(form); submitEdit()}}
           >
             Salvar
           </Button>
           <Flex justify={"center"} marginTop={"0.75rem"}></Flex>
         </Flex>
       </Flex>
-    </Flex>
-  );
+         
+       </Stack>
+    )
+
 }

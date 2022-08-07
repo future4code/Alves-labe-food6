@@ -4,15 +4,15 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-import Login from '../pages/Login';
-import Signup from '../pages/Signup';
-import Address from '../pages/Address';
+import Login from '../pages/User/Login';
+import Signup from '../pages/User/Signup';
+import Address from '../pages/User/Address';
 import GlobalState from '../components/global/GlobalState';
-import { EditAddress } from '../pages/EditAddress';
+import { EditAddress } from '../pages/Profile/EditAddress';
 import HomePage from '../pages/homePage/HomePage';
-import Profile from '../pages/Profile';
+import Profile from '../pages/Profile/Profile';
 import RestaurantPage from '../pages/RestaurantPage/RestaurantPage';
-import EditProfile from '../pages/RestaurantPage/EditProfile';
+import EditProfile from '../pages/Profile/EditProfile';
 
 
 
