@@ -179,7 +179,7 @@ export default function GlobalState(props) {
   }
 
   const placeOrder = (paymentMethod, restaurantId) => {
-    if( cartProducts.length === 0 ) {
+    if (cartProducts.length === 0) {
       return
     }
     setCartProducts([])
@@ -196,20 +196,27 @@ export default function GlobalState(props) {
       paymentMethod: paymentMethod
     }
     axios.post(baseURL + `/restaurants/${restaurantId}/order`, body, {
-      headers : {
+      headers: {
         auth: localStorage.getItem('token')
       }
     })
   }
 
-  const [activeOrder, setActiveOrder] = useState({})
+  const [activeOrderInfo, setActiveOrderInfo] = useState({})
+  const [activeOrder, setActiveOrder] = useState(false)
+
   const getActiveOrder = () => {
     axios.get(baseURL + '/active-order', {
       headers: {
         auth: localStorage.getItem('token')
       }
     }).then((res) => {
-      setActiveOrder(res.data.order)
+      if (res.data.order !== null) {
+        setActiveOrder(true)
+      } else {
+        setActiveOrder(false)
+      }
+      setActiveOrderInfo(res.data.order)
     })
   }
 
@@ -236,7 +243,8 @@ export default function GlobalState(props) {
     getRestaurantDetails,
     placeOrder,
     getActiveOrder,
-    activeOrder
+    activeOrder,
+    activeOrderInfo
   };
 
   return <Provider value={values}>{props.children}</Provider>;

@@ -75,7 +75,7 @@ const CardRest = styled.div`
 `
 
 const HomePage = () => {
-    const { rest, profile, getRestaurantDetails, getActiveOrder, activeOrder } = useContext(GlobalContext)
+    const { rest, profile, getRestaurantDetails, getActiveOrder, activeOrder, activeOrderInfo } = useContext(GlobalContext)
     const [filter, setFilter] = useState('')
     const [query, setQuery] = useState('')
     const [color, setColor] = useState(false)
@@ -171,7 +171,7 @@ const HomePage = () => {
                         })}
                 </div>
             </Flex>
-            {activeOrder.totalPrice && <Alert
+            {(activeOrder) && <Alert
                 position='sticky'
                 variant='subtle'
                 padding='1.5rem'
@@ -186,10 +186,10 @@ const HomePage = () => {
                         Pedido em andamento
                     </AlertTitle>
                     <AlertDescription fontFamily={'Roboto'}>
-                        {activeOrder.restaurantName}
+                        {activeOrderInfo.restaurantName}
                     </AlertDescription>
                     <AlertDescription fontFamily={'Roboto'} fontWeight={'bold'} >
-                        SUBTOTAL R${(activeOrder.totalPrice.toString().includes('.')) ? (activeOrder.totalPrice + '0') : (activeOrder.totalPrice + '.00')}
+                        SUBTOTAL R${(activeOrderInfo.totalPrice.toString().includes('.')) ? (activeOrderInfo.totalPrice.toFixed(1) + '0') : (activeOrderInfo.totalPrice.toFixed(1) + '.00')}
                     </AlertDescription>
                 </Flex>
             </Alert>}

@@ -9,7 +9,4 @@ export const getRestaurants = (setRest) => {
         .then((resp)=>{
             setRest(resp.data.restaurants)
         })
-        .catch((err)=>{
-            console.log(err)
-        })
 }
