@@ -1,41 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Icon } from "@chakra-ui/react";
-import { AiOutlineHome,AiOutlineUser} from "react-icons/ai";
-import { CgShoppingCart } from "react-icons/cg";
-import styled from "styled-components";
-import { goToHome, goToProfile } from "../routes/coordinator";
-
-const Container = styled.div`
-  width:100vw;
-  height:3.062rem;
-  position:fixed;
-  top:38.838rem;
-  display:flex;
-  justify-content:space-evenly;
-  background-color:white;
-  align-items:center;
-`;
-export default function NavBar() {
-
-  const [colorHome,setColorHome] = useState(false)
-  const [colorCart,setColorCart] = useState(false)
-  const [colorProfile,setColorProfile] = useState(false)
-  const navigate = useNavigate()
-  useEffect(()=>{
-    if (window.location.pathname==="/") {
-        setColorHome(true)
-  }else if(window.location.pathname==="/profile"){
-    setColorProfile(true)
-  }else if(window.location.pathname==="/cart"){
-    setColorCart(true)
-  }
-  },[])
-  return (
-    <Container>
-      <Icon as={AiOutlineHome} onClick={()=>{goToHome(navigate)}} h="1.638rem" w="1.638rem" color={ colorHome ? '#E8222E' : '#b8b8b8'}/>
-      <Icon as={CgShoppingCart} onClick={'go to carrinho'} h="1.638rem" w="1.638rem" color={colorCart ? '#E8222E' : '#b8b8b8'}/>
-      <Icon as={AiOutlineUser} onClick={()=>goToProfile(navigate)} h="1.638rem" w="1.638rem" color={colorProfile ? '#E8222E' : '#b8b8b8'}/>
-    </Container>
-  );
+import React from 'react'
+import { Flex, Image, Heading, Text, Divider, Grid } from '@chakra-ui/react'
+import HomeIcon from '../img/homepage.svg'
+import HomeIconActive from '../img/homepage-active.svg'
+import ProfileIcon from '../img/avatar.svg'
+import ProfileIconActive from '../img/avatar-active.svg'
+import CartIcon from '../img/shopping-cart.svg'
+import CartIconActive from '../img/shopping-cart-active.svg'
+import { goToHome, goToProfile, goToCart } from '../routes/coordinator'
+import { useNavigate } from 'react-router-dom'
+export default function NavBar({ page }) {
+    const navigate = useNavigate()
+    return (
+        <Grid templateColumns={'1fr 1fr 1fr'} position={'sticky'} bottom={'0'} w={'100%'} background={'#fff'} h={'3.1rem'} boxShadow={'0 -1px 3px 0 rgba(0, 0, 0, 0.2), 0 -2px 1px -1px rgba(0, 0, 0, 0.12), 0 -1px 1px 0 rgba(0, 0, 0, 0.14)'}>
+            {page === 'home' ? <Image src={HomeIconActive} alignSelf={'center'} justifySelf={'center'} onClick={() => goToHome(navigate)} /> : <Image src={HomeIcon} alignSelf={'center'} justifySelf={'center'} onClick={() => goToHome(navigate)} />}
+            {page === 'cart' ? <Image src={CartIconActive} alignSelf={'center'} justifySelf={'center'} onClick={() => goToCart(navigate)} /> : <Image src={CartIcon} alignSelf={'center'} justifySelf={'center'} onClick={() => goToCart(navigate)} />}
+            {page === 'profile' ? <Image src={ProfileIconActive} alignSelf={'center'} justifySelf={'center'} onClick={() => goToProfile(navigate)} /> : <Image src={ProfileIcon} alignSelf={'center'} justifySelf={'center'} onClick={() => goToProfile(navigate)} />}
+        </Grid>
+    )
 }
