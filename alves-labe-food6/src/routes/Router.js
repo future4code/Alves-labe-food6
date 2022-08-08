@@ -13,6 +13,7 @@ import HomePage from '../pages/homePage/HomePage';
 import Profile from '../pages/Profile/Profile';
 import RestaurantPage from '../pages/RestaurantPage/RestaurantPage';
 import EditProfile from '../pages/Profile/EditProfile';
+import Cart from '../pages/Cart';
 
 
 
@@ -29,7 +30,7 @@ const Router = () => {
           <Route path='/restaurant/:id' element={<RestaurantPage />}></Route>   
           <Route path='/editaddress' element={<EditAddress />}></Route>
           <Route path='/editprofile' element={<EditProfile />}></Route>                 
-
+          <Route path='/cart' element={<Cart />}></Route>                 
         </Routes>
       </GlobalState>
     </BrowserRouter>

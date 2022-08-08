@@ -12,10 +12,6 @@ export const getAddress = (setAddress)=>{
     .then((res)=>{
         setAddress(res.data.address)
     })
-    .catch((err)=>{
-        console.log(err)
-    })
-
 }
 export const getProfile = (setProfile) => {
     axios
@@ -25,10 +21,6 @@ export const getProfile = (setProfile) => {
         },
       })
       .then((response) => {
-        console.log(response);
         setProfile(response.data.user);
       })
-      .catch((error) => {
-        console.log(error);
-      });
   };

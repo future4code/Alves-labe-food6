@@ -5,7 +5,7 @@ import { baseURL } from "../../constants/baseURL";
 import { useNavigate } from "react-router-dom";
 import { getRestaurants } from "../../services/restaurants";
 import { getAddress, getProfile } from "../../services/profile";
-import { goBack, goToAddress, goToEditProfile, goToHome } from "../../routes/coordinator";
+import { goBack, goToAddress, goToEditProfile, goToHome, goToRestaurant } from "../../routes/coordinator";
 
 export default function GlobalState(props) {
   const [errors, setErrors] = useState({
@@ -20,24 +20,23 @@ export default function GlobalState(props) {
   const [address, setAddress] = useState({})
   const [editControl, setEditControl] = useState(false)
   const [profile, setProfile] = useState({});
-
-
-  console.log(profile)
+  const [restaurantDetails, setRestaurantDetails] = useState({})
+  const [restaurantProducts, setRestaurantProducts] = useState([])
+  const [cartProducts, setCartProducts] = useState([])
 
   const navigate = useNavigate();
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     getRestaurants(setRest)
     getProfile(setProfile)
-  },[])
-  useEffect(()=>{
+  }, [])
+  useEffect(() => {
     getAddress(setAddress)
     getRestaurants(setRest)
     getProfile(setProfile)
     goToEditProfile(setProfile)
-  },[editControl])
+  }, [editControl])
 
-console.log(address)
   const userLogin = (form) => {
     if (
       form.email === "" ||
@@ -57,14 +56,10 @@ console.log(address)
     axios
       .post(baseURL + "/login", form)
       .then((res) => {
-        console.log(res.data);
         localStorage.setItem("token", res.data.token);
-        goToAddress(navigate)
+        goToHome(navigate)
         setErrors({ email: false, password: false });
       })
-      .catch((err) => {
-        console.log(err);
-      });
   };
 
   const userSignUp = (form) => {
@@ -88,27 +83,23 @@ console.log(address)
       return;
     }
     if (form.cpf
-    .match(
-      '^[0-9]{3}.?[0-9]{3}.?[0-9]{3}-?[0-9]{2}'
-      ) 
-    )
-    {
-    
+      .match(
+        '^[0-9]{3}.?[0-9]{3}.?[0-9]{3}-?[0-9]{2}'
+      )
+    ) {
+
       setErrors({ cpf: true });
       return;
     }
-
     axios
       .post(baseURL + "/signup", form)
       .then((res) => {
-        console.log(res.data);
+
         navigate("/address");
         setErrors({ email: false, password: false, name: false, cpf: false });
       })
-      .catch((err) => {
-        console.log(err);
-      });
   };
+
   const userAddAddress = (form) => {
     if (
       form.street === "") {
@@ -128,25 +119,19 @@ console.log(address)
       return;
     }
     if (form.state === "") {
-        setErrors({ state: true });
-        return;
-      }
-  
-
-       
+      setErrors({ state: true });
+      return;
+    }
     axios
-      .put(baseURL + "/address", form, { headers: { auth : localStorage.getItem("token") }})
+      .put(baseURL + "/address", form, { headers: { auth: localStorage.getItem("token") } })
       .then((res) => {
-        console.log(res.data);
         localStorage.setItem("token", res.data.token);
         goToHome(navigate)
         setEditControl(!editControl)
-        setErrors({ street: false, number: false, neighbourhood: false, city: false, state:false });
+        setErrors({ street: false, number: false, neighbourhood: false, city: false, state: false });
       })
-      .catch((err) => {
-        console.log(err);
-      });
   };
+
   const userEditProfile = (form) => {
     if (
       form.email === "" ||
@@ -164,35 +149,76 @@ console.log(address)
       return;
     }
     if (form.cpf
-    .match(
-      '^[0-9]{3}.?[0-9]{3}.?[0-9]{3}-?[0-9]{2}'
-      ) 
-    )
-    {
-    
+      .match(
+        '^[0-9]{3}.?[0-9]{3}.?[0-9]{3}-?[0-9]{2}'
+      )
+    ) {
       setErrors({ cpf: true });
       return;
     }
-
     axios
-      .put(baseURL + "/profile", form, { headers: { auth : localStorage.getItem("token") }})
+      .put(baseURL + "/profile", form, { headers: { auth: localStorage.getItem("token") } })
       .then((res) => {
-        console.log(res.data);
         goBack(navigate);
         setEditControl(!editControl)
         setErrors({ email: false, name: false, cpf: false });
       })
-      .catch((err) => {
-        console.log(err);
-      });
   };
+
+  const getRestaurantDetails = (id) => {
+    axios.get(baseURL + `/restaurants/${id}`, {
+      headers: {
+        auth: localStorage.getItem('token')
+      }
+    })
+      .then((res) => {
+        setRestaurantDetails(res.data.restaurant)
+        setRestaurantProducts(res.data.restaurant.products)
+        goToRestaurant(navigate, id)
+      })
+  }
+
+  const placeOrder = (paymentMethod, restaurantId) => {
+    if( cartProducts.length === 0 ) {
+      return
+    }
+    setCartProducts([])
+    localStorage.setItem('cartProducts', JSON.stringify([]))
+    const products = cartProducts.map((item) => {
+      let obj = {
+        id: item.id,
+        quantity: item.quantity
+      }
+      return obj
+    })
+    const body = {
+      products: products,
+      paymentMethod: paymentMethod
+    }
+    axios.post(baseURL + `/restaurants/${restaurantId}/order`, body, {
+      headers : {
+        auth: localStorage.getItem('token')
+      }
+    })
+  }
+
+  const [activeOrder, setActiveOrder] = useState({})
+  const getActiveOrder = () => {
+    axios.get(baseURL + '/active-order', {
+      headers: {
+        auth: localStorage.getItem('token')
+      }
+    }).then((res) => {
+      setActiveOrder(res.data.order)
+    })
+  }
 
   const Provider = GlobalContext.Provider;
   const values = {
     userLogin,
     userSignUp,
     userAddAddress,
-    errors, 
+    errors,
     rest,
     setRest,
     filter,
@@ -202,6 +228,15 @@ console.log(address)
     address,
     profile,
     userEditProfile,
+    restaurantDetails,
+    restaurantProducts,
+    cartProducts,
+    setCartProducts,
+    setRestaurantDetails,
+    getRestaurantDetails,
+    placeOrder,
+    getActiveOrder,
+    activeOrder
   };
 
   return <Provider value={values}>{props.children}</Provider>;

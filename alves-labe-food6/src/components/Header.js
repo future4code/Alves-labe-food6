@@ -1,61 +1,22 @@
-import React from "react";
-import { Box, Flex, GridItem, IconButton, Grid } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
-import { GrPrevious } from 'react-icons/gr';
-import { goBack } from "../routes/coordinator";
+import React from 'react'
+import { Flex, Text, Image, Grid } from '@chakra-ui/react'
+import BackArrow from '../img/back.svg'
+import { goToHome, goToLoginPage, goToProfile, } from '../routes/coordinator'
+import { useNavigate } from 'react-router-dom'
 
+export default function Header({name, onRestaurant, onEditAddress, onEdit, onSignUp}) {
 
-export default function Header() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const defineTitle = () => {
-    if (window.location.pathname.includes("/restaurant/")) {
-        return (
-            <Box justifySelf={"center"} h={"7vh"} textAlign={'center'} as='flex'><p>Restaurante</p></Box>
-        )
-    }
-    if (window.location.pathname.includes("/editaddress")) {
-      return (
-          <Box justifySelf={"center"} h={"7vh"} textAlign={'center'} as='flex'><p>Endereço Atual</p></Box>
-      )
-  }
-  if (window.location.pathname.includes("/editprofile")) {
-    return (
-        <Box justifySelf={"center"} h={"7vh"} textAlign={'center'} as='flex'><p>Editar Perfil</p></Box>
-
-    )
-}
-if (window.location.pathname.includes("/profile")) {
   return (
-      <Box justifySelf={"center"} h={"7vh"} textAlign={'center'} as='flex'><p>Meu Perfil</p></Box>
-      
-  )
-}
-  }
-  return (
-    <Grid
-      templateRows='1'
-      templateColumns='repeat(3,1fr)'
-      alignItems={"center"}
-      fontFamily={"Roboto"}
-      justify={'center'}
-      w={"100vw"}
-      h={"7vh"}
-      borderBottom={"1px solid #d0d0d0"}
-    >
-    <GridItem>
-      <IconButton
-        background={"#FFFFFF"}
-        justifySelf={'flex-start'}
-        onClick={()=>goBack(navigate)}
-        icon={<GrPrevious />}
-        fontSize="20px"
-      ></IconButton>
-      </GridItem>
-    <GridItem>
-      {defineTitle()}
-      </GridItem>
+    <Grid boxShadow={'0 0.5px 0 0 rgba(0, 0, 0, 0.25)'} h={'2.75rem'} templateColumns={'1fr 5fr 1fr'} alignItems={'center'} justifyItems={'center'}>
+        {onRestaurant && <Image src={BackArrow} onClick={() => goToHome(navigate)}/>}
+        {(!onRestaurant && !onEditAddress && !onEdit && !onSignUp) && <div></div>}
+        {onEditAddress && <Image src={BackArrow} onClick={() => goToProfile(navigate)}/>}
+        {onEdit && <Image src={BackArrow} onClick={() => goToProfile(navigate)}/>}
+        {onSignUp && <Image src={BackArrow} onClick={() => goToLoginPage(navigate)}/>}
+
+        <Text fontFamily={'Roboto'}>{name}</Text>
     </Grid>
-
-  );
+  )
 }

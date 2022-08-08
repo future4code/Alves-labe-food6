@@ -1,10 +1,10 @@
 import React, { useContext, useEffect } from 'react'
-import { Flex, Input, Button, Heading, Image, Text, Link, FormControl, FormErrorMessage, FormHelperText } from '@chakra-ui/react'
+import { Flex, Input, Button, Heading, Image, Text, FormControl, FormErrorMessage, FormHelperText } from '@chakra-ui/react'
 import Logo from '../../img/logo-future-eats-login.svg'
 import { useForm } from '../../hooks/useForm'
 import { GlobalContext } from '../../components/global/GlobalContext'
 import { goToHome } from '../../routes/coordinator'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 
 export default function Login() {
     const { form, onChange } = useForm({ email: '', password: '' })
@@ -33,7 +33,7 @@ export default function Login() {
                 </FormControl> 
                 <Button background={'#E8222E'} borderRadius={'0'} h={'2.625rem'} fontWeight={'400'} onClick={() => userLogin(form)}>Entrar</Button>
                 <Flex justify={'center'} marginTop={'0.75rem'}>
-                    <Text>Não possui cadastro? <Link>Clique aqui.</Link></Text>
+                    <Text>Não possui cadastro? <Link to='/signup'>Clique aqui.</Link></Text>
                 </Flex>
             </Flex>
         </Flex>

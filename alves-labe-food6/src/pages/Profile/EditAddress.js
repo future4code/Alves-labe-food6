@@ -1,58 +1,43 @@
-
-
 import { Input, Stack, Button, Flex, Image, Heading, FormControl, FormHelperText, FormErrorMessage } from "@chakra-ui/react";
 import Header from "../../components/Header";
 import { useForm } from "../../hooks/useForm";
 import Logo from "../../img/logo-future-eats-login.svg";
 import { GlobalContext } from "../../components/global/GlobalContext";
-import { useContext, useEffect} from "react";
+import { useContext, useEffect } from "react";
 import { goBack, goToLoginPage } from "../../routes/coordinator";
 import { useNavigate } from "react-router-dom";
 
-
-export const EditAddress = ()=>{
+export const EditAddress = () => {
   const { userAddAddress, errors, address } = useContext(GlobalContext);
   const navigate = useNavigate()
-        const {form, onChange} = useForm(
-            {
-                street: address && address.street,
-                number: address && address.number,
-                neighbourhood: address && address.neighbourhood,
-                city: address && address.city,
-                state: address && address.state,
-                complement: address && address.complement,
-              }
-        )
+  const { form, onChange } = useForm(
+    {
+      street: address && address.street,
+      number: address && address.number,
+      neighbourhood: address && address.neighbourhood,
+      city: address && address.city,
+      state: address && address.state,
+      complement: address && address.complement,
+    }
+  )
 
-        useEffect(()=>{
-          !localStorage.getItem('token') && goToLoginPage(navigate)
-        },[])
-    const submitEdit = () =>{
-        alert('Endereço alterado com sucesso!')
-    } 
-    return(
-       
-        <Stack spacing={12} >
-              <Header/>
-
-           <Flex
+  useEffect(() => {
+    !localStorage.getItem('token') && goToLoginPage(navigate)
+  }, [])
+  const submitEdit = () => {
+    alert('Endereço alterado com sucesso!')
+  }
+  return (
+    <Stack>
+      <Header name={'Endereço'} onEditAddress={true} />
+      <Flex
         flexDir={"center"}
         justify={"center"}
         align={"center"}
         fontFamily={"Roboto"}
         w={"100%"}
       >
-        <Flex flexDir={"column"} gap={"1rem"} w={"90%"}>
-          <Image src={Logo} w={"30%"} alignSelf={"center"} />
-          <Heading
-            alignSelf={"center"}
-            fontSize={"1.125rem"}
-            paddingY={"0.75rem"}
-            fontWeight={"400"}
-            fontFamily={"Roboto"}
-          >
-            Meu endereço
-          </Heading>
+        <Flex flexDir={"column"} w={"90%"}>
           <FormControl id="street" isRequired isInvalid={errors.street}>
             <FormHelperText marginBottom={"5px"}>Logradouro*</FormHelperText>
             <Input
@@ -137,18 +122,18 @@ export const EditAddress = ()=>{
           </FormControl>
           <Button
             background={"#E8222E"}
+            marginTop={'1rem'}
             borderRadius={"0"}
             h={"2.625rem"}
             fontWeight={"400"}
-            onClick={() => {userAddAddress(form); submitEdit()}}
+            onClick={() => { userAddAddress(form); submitEdit() }}
           >
             Salvar
           </Button>
-          <Flex justify={"center"} marginTop={"0.75rem"}></Flex>
         </Flex>
       </Flex>
-         
-       </Stack>
-    )
+
+    </Stack>
+  )
 
 }

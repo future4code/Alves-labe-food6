@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { GlobalContext } from '../../components/global/GlobalContext'
 import styled from 'styled-components'
-import { Input, InputGroup, InputLeftElement, Flex, Box, useSlider } from '@chakra-ui/react/'
+import { Input, InputGroup, InputLeftElement, Flex, Box, Alert, Image, AlertIcon, AlertTitle, AlertDescription, } from '@chakra-ui/react/'
 import { SearchIcon } from '@chakra-ui/icons'
 import { useNavigate } from 'react-router-dom'
 import { goToAddress, goToLoginPage, goToRestaurant } from '../../routes/coordinator'
 import NavBar from '../../components/NavBar'
+import Header from '../../components/Header'
+import Clock from '../../img/clock.svg'
 
 const Title = styled.h1`
 font-family: Roboto;
@@ -73,16 +75,18 @@ const CardRest = styled.div`
 `
 
 const HomePage = () => {
-    const { rest, profile } = useContext(GlobalContext)
+    const { rest, profile, getRestaurantDetails, getActiveOrder, activeOrder } = useContext(GlobalContext)
     const [filter, setFilter] = useState('')
     const [query, setQuery] = useState('')
     const [color, setColor] = useState(false)
 
     const navigate = useNavigate()
     useEffect(() => {
+        getActiveOrder()
         profile.hasAddres === false && goToAddress(navigate);
         !localStorage.getItem("token") && goToLoginPage(navigate)
     }, [])
+
     const handleFilter = (category) => {
         if (filter === category) {
             setFilter('')
@@ -116,56 +120,80 @@ const HomePage = () => {
     </Box>)
 
     return (
-        <Flex flexDir={'column'} justifyItems={'center'} alignItems={'center'} w='100vw'>
-            <Title>Ifuture</Title>
-            <InputGroup h={'3.5rem'} w={'20.5rem'}>
-                <InputLeftElement
-                    h={'3.5rem'}
-                    pointerEvents='none'
-                    children={<SearchIcon color='gray.300' />}
-                />
-                <Input placeholder={'Restaurante'}
-                    _placeholder={{ color: '#d0d0d0' }}
-                    h={'3.5rem'} w={'20.5rem'}
-                    type={'text'}
-                    name={'query'}
-                    value={query}
-                    onChange={handleQuery}>
-                </Input>
-            </InputGroup>
-            <Flex w='100vw' padding='1rem' overflow={'scroll'}>
-                {rest && [...new Set(arrayCat)]}
+        <Flex flexDir={'column'}>
+            <Header name={'Ifuture'} />
+            <Flex flexDir={'column'} minH={'100vh'} justifyItems={'center'} alignItems={'center'} w={'100vw'} paddingTop={'0.5rem'}>
+                <InputGroup h={'3.5rem'} w={'20.5rem'}>
+                    <InputLeftElement
+                        h={'3.5rem'}
+                        pointerEvents='none'
+                        children={<SearchIcon color='gray.300' />}
+                    />
+                    <Input placeholder={'Restaurante'}
+                        _placeholder={{ color: '#d0d0d0' }}
+                        h={'3.5rem'} w={'20.5rem'}
+                        type={'text'}
+                        name={'query'}
+                        value={query}
+                        onChange={handleQuery}>
+                    </Input>
+                </InputGroup>
+                <Flex w='100vw' padding='1rem' overflow={'scroll'}>
+                    {rest && [...new Set(arrayCat)]}
+                </Flex>
+                <div>
+                    {rest
+                        .filter((rest) => {
+                            if (filter !== '') {
+                                return filter === rest.category
+                            } else {
+                                return true
+                            }
+                        })
+                        .filter((rest) => {
+                            if (query !== '') {
+                                return rest.name.toLowerCase().includes(query.toLowerCase())
+                            } else {
+                                return true
+                            }
+                        })
+                        .map((rest) => {
+                            return (
+                                <CardRest key={rest.id} onClick={() => getRestaurantDetails(rest.id)}>
+                                    <img src={rest.logoUrl} />
+                                    <h2>{rest.name}</h2>
+                                    <div>
+                                        <p>{rest.deliveryTime} - {rest.deliveryTime + 15} min</p>
+                                        <p>Frete : R${rest.shipping},00</p>
+                                    </div>
+                                </CardRest>
+                            )
+                        })}
+                </div>
             </Flex>
-            <div>
-                {rest
-                    .filter((rest) => {
-                        if (filter !== '') {
-                            return filter === rest.category
-                        } else {
-                            return true
-                        }
-                    })
-                    .filter((rest) => {
-                        if (query !== '') {
-                            return rest.name.toLowerCase().includes(query.toLowerCase())
-                        } else {
-                            return true
-                        }
-                    })
-                    .map((rest) => {
-                        return (
-                            <CardRest key={rest.id} onClick={() => goToRestaurant(navigate, rest.id)}>
-                                <img src={rest.logoUrl} />
-                                <h2>{rest.name}</h2>
-                                <div>
-                                    <p>{rest.deliveryTime} - {rest.deliveryTime + 15} min</p>
-                                    <p>Frete : R${rest.shipping},00</p>
-                                </div>
-                            </CardRest>
-                        )
-                    })}
-            </div>
-            <NavBar />
+            {activeOrder.totalPrice && <Alert
+                position='sticky'
+                variant='subtle'
+                padding='1.5rem'
+                height='7.35rem'
+                bottom='49'
+                background='#e8222e'
+                opacity='0.9'
+            >
+                <Image src={Clock} />
+                <Flex flexDir={'column'} justifyContent={'left'} marginLeft={'1.5rem'}>
+                    <AlertTitle fontFamily={'Roboto'} fontSize={'1rem'} color={'white'} fontWeight={'400'}>
+                        Pedido em andamento
+                    </AlertTitle>
+                    <AlertDescription fontFamily={'Roboto'}>
+                        {activeOrder.restaurantName}
+                    </AlertDescription>
+                    <AlertDescription fontFamily={'Roboto'} fontWeight={'bold'} >
+                        SUBTOTAL R${(activeOrder.totalPrice.toString().includes('.')) ? (activeOrder.totalPrice + '0') : (activeOrder.totalPrice + '.00')}
+                    </AlertDescription>
+                </Flex>
+            </Alert>}
+            <NavBar page={'home'} />
         </Flex>
     )
 }
