@@ -5,10 +5,13 @@ import Header from '../components/Header'
 import NavBar from '../components/NavBar'
 import ProductCardCart from '../components/ProductCardCart'
 import { getProfile } from '../services/profile'
+import { goToLoginPage } from '../routes/coordinator'
+import { useNavigate } from 'react-router-dom'
 
 export default function Cart() {
     const { profile, restaurantDetails, setRestaurantDetails, cartProducts, setCartProducts, placeOrder, getActiveOrder, activeOrder } = useContext(GlobalContext)
     const [paymentMethod, setPaymentMethod] = useState('money')
+    const navigate = useNavigate()
     useEffect(() => {
         getActiveOrder()
         getProfile()
@@ -36,7 +39,7 @@ export default function Cart() {
                     <Heading color={'#e8222e'} fontSize={'1rem'} fontWeight={'400'} fontFamily={'Roboto'} margin={0}>{cartProducts.length > 0 && restaurantDetails.name}</Heading>
                     <Text color={'#b8b8b8'} fontFamily={'Roboto'}>{cartProducts.length > 0 && restaurantDetails.address}</Text>
                     <Text fontFamily={'Roboto'} color={'#b8b8b8'}>{cartProducts.length > 0 && (restaurantDetails.deliveryTime - 10) + ' - ' + (restaurantDetails.deliveryTime + 10) + ' min'}</Text>
-                    {(activeOrder.totalPrice && cartProducts.length === 0) && <Text fontFamily={'Roboto'} align={"center"} >Pedido em andamento...</Text>}
+                    {(activeOrder && cartProducts.length === 0) && <Text fontFamily={'Roboto'} align={"center"} color={'#E8222E'}>Pedido em andamento...</Text>}
                     {(cartProducts.length > 0 || activeOrder) ? cartProducts.map((product) => {
                         return <ProductCardCart
                             photoUrl={product.photoUrl}
