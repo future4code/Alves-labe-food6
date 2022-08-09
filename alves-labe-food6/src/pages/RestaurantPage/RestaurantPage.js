@@ -20,6 +20,7 @@ const RestaurantPage = () => {
     return item.category
   })
 
+  const navigate = useNavigate()
   let uniqueCategories = [...new Set(productCategories)]
 
   useEffect(() => {

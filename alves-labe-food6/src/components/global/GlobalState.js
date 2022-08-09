@@ -184,7 +184,6 @@ export default function GlobalState(props) {
         setRestaurantProducts(res.data.restaurant.products)
         goToRestaurant(navigate, id)
       }).catch(err => {
-        alert("Ocorreu um problema");
         console.log(err);
     });
   }
@@ -229,7 +228,6 @@ export default function GlobalState(props) {
       }
       setActiveOrderInfo(res.data.order)
     }).catch(err => {
-      alert("Ocorreu um problema");
       console.log(err);
   });
   }
