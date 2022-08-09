@@ -7,7 +7,7 @@ Projeto final do curso de Front-End da Labenu. A ideia foi desenvolver um aplica
 
 # 🔗 Link para acessar
 
-[psychedelic-waves.surge.sh](https://psychedelic-waves.surge.sh/login)
+[keen-interest.surge.sh/](https://keen-interest.surge.sh/)
 
 # 🛠 Tecnologias
 
