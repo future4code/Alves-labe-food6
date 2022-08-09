@@ -59,7 +59,10 @@ export default function GlobalState(props) {
         localStorage.setItem("token", res.data.token);
         goToHome(navigate)
         setErrors({ email: false, password: false });
-      })
+      }).catch(err => {
+        alert("Ocorreu um problema");
+        console.log(err);
+    });
   };
 
   const userSignUp = (form) => {
@@ -82,22 +85,21 @@ export default function GlobalState(props) {
       setErrors({ name: true });
       return;
     }
-    if (form.cpf
-      .match(
-        '^[0-9]{3}.?[0-9]{3}.?[0-9]{3}-?[0-9]{2}'
-      )
-    ) {
-
+    console.log(form)
+    if (form.cpf.length !== 11 ) {
       setErrors({ cpf: true });
       return;
     }
     axios
       .post(baseURL + "/signup", form)
       .then((res) => {
-
+        localStorage.setItem("token", res.data.token);
         navigate("/address");
         setErrors({ email: false, password: false, name: false, cpf: false });
-      })
+      }).catch(err => {
+        alert("Ocorreu um problema");
+        console.log(err);
+    });
   };
 
   const userAddAddress = (form) => {
@@ -129,7 +131,10 @@ export default function GlobalState(props) {
         goToHome(navigate)
         setEditControl(!editControl)
         setErrors({ street: false, number: false, neighbourhood: false, city: false, state: false });
-      })
+      }).catch(err => {
+        alert("Ocorreu um problema");
+        console.log(err);
+    });
   };
 
   const userEditProfile = (form) => {
@@ -162,7 +167,10 @@ export default function GlobalState(props) {
         goBack(navigate);
         setEditControl(!editControl)
         setErrors({ email: false, name: false, cpf: false });
-      })
+      }).catch(err => {
+        alert("Ocorreu um problema");
+        console.log(err);
+    });
   };
 
   const getRestaurantDetails = (id) => {
@@ -175,7 +183,10 @@ export default function GlobalState(props) {
         setRestaurantDetails(res.data.restaurant)
         setRestaurantProducts(res.data.restaurant.products)
         goToRestaurant(navigate, id)
-      })
+      }).catch(err => {
+        alert("Ocorreu um problema");
+        console.log(err);
+    });
   }
 
   const placeOrder = (paymentMethod, restaurantId) => {
@@ -217,7 +228,10 @@ export default function GlobalState(props) {
         setActiveOrder(false)
       }
       setActiveOrderInfo(res.data.order)
-    })
+    }).catch(err => {
+      alert("Ocorreu um problema");
+      console.log(err);
+  });
   }
 
   const Provider = GlobalContext.Provider;
